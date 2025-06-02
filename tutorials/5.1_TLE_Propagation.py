@@ -64,3 +64,4 @@ plt.show()
 
 plt.plot(pos)
 plt.title('Inertial position')
+plt.show()
