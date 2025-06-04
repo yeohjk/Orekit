@@ -3,6 +3,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
+  - bottleneck=1.4.2=py313h2cb717b_0
   - brotli-python=1.0.9=py313h5da7b33_9
   - bzip2=1.0.8=h2bbff1b_6
   - ca-certificates=2025.4.26=h4c7d964_0
@@ -33,11 +34,13 @@ dependencies:
   - matplotlib=3.10.0=py313haa95532_1
   - matplotlib-base=3.10.0=py313h7aa5d4e_1
   - mkl=2024.2.2=h66d3029_15
+  - numexpr=2.10.2=mkl_py313hda4395b_0
   - numpy=2.2.6=py313hefb8edb_0
   - openjdk=8.0.412=h57928b3_2
   - openjpeg=2.5.2=h9b5d1b5_1
   - openssl=3.5.0=ha4e3fda_1
   - packaging=24.2=py313haa95532_0
+  - pandas=2.2.3=py313h5da7b33_0
   - pillow=11.1.0=py313hea0d53e_1
   - pip=25.1=pyhc872135_2
   - pyparsing=3.2.0=py313haa95532_0
@@ -45,7 +48,9 @@ dependencies:
   - pyqt6-sip=13.9.1=py313h827c3e9_1
   - python=3.13.2=hadb2040_100_cp313
   - python-dateutil=2.9.0post0=py313haa95532_2
+  - python-tzdata=2025.2=pyhd3eb1b0_0
   - python_abi=3.13=0_cp313
+  - pytz=2024.1=py313haa95532_0
   - qtbase=6.7.3=h0804d20_0
   - qtdeclarative=6.7.3=h5da7b33_0
   - qtsvg=6.7.3=hf2fb9eb_0
