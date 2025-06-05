@@ -47,3 +47,17 @@ p2 = eme_frame.getTransformTo(ITRF, initDate).transformPVCoordinates(pv_eme)
 print(p2)
 p3 = ITRF.getTransformTo(eme_frame, initDate).transformPVCoordinates(p2)
 print(p3)
+
+# Testing topocentric frame
+earthFrame = FramesFactory.getITRF(IERSConventions.IERS_2010, True)
+earth = OneAxisEllipsoid(Constants.WGS84_EARTH_EQUATORIAL_RADIUS,
+                                       Constants.WGS84_EARTH_FLATTENING,
+                                       earthFrame)
+longitude = radians(21.063)
+latitude  = radians(67.878)
+altitude  = 341.0
+station_point = GeodeticPoint(latitude, longitude, altitude)
+station_frame = TopocentricFrame(earth, station_point, "Esrange")
+pv_topo = eme_frame.getTransformTo(station_frame, initDate).transformPVCoordinates(pv_eme)
+print(pv_topo)
+print(pv_topo.getPosition())
