@@ -15,11 +15,14 @@ from org.orekit.estimation.measurements import ObservableSatellite
 from org.hipparchus.geometry.euclidean.threed import Vector3D
 from org.hipparchus.optim.nonlinear.vector.leastsquares import LevenbergMarquardtOptimizer
 
-
+# Initialises JDK and orekit library data
 orekit.initVM()
 setup_orekit_curdir(from_pip_library=True)
 
+# Setting variables needed for data transformation
 utc = TimeScalesFactory.getUTC()
+inertial = FramesFactory.getEME2000()
+ecef = FramesFactory.getITRF(FramesFactory.getITRFType(IERSConventions.IERS_2010), True)
 
 with open("data/WOD_GPS_Test_Data_ 100525.csv","r") as file:
     file_content = csv.reader(file)
