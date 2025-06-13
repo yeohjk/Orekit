@@ -10,6 +10,8 @@ from org.orekit.estimation.measurements import PV, ObservableSatellite
 from org.hipparchus.geometry.euclidean.threed import Vector3D
 from org.orekit.propagation.analytical.tle import TLE
 from org.orekit.propagation.conversion import TLEPropagatorBuilder
+from org.orekit.orbits import PositionAngleType
+from org.orekit.propagation.analytical.tle.generation import LeastSquaresTleGenerationAlgorithm
 
 # Initialises JVM and orekit library data
 orekit.initVM()
@@ -53,5 +55,9 @@ with open("../../../TLE/TeLEOS-1/TLE TeLEOS-1 20250611 Spacetrack.txt", "r") as 
     tle_line2 = file_content[1]
 tle_initial = TLE(tle_line1, tle_line2)
 print(tle_initial)
+
+# Creating TLE Propagator Builder
+builder = TLEPropagatorBuilder(tle_initial, PositionAngleType.TRUE, 1.0, LeastSquaresTleGenerationAlgorithm())
+
 
 
