@@ -44,11 +44,13 @@ with open("data/WOD_GPS_Test_Data_ 100525.csv","r") as file:
         # Loads transformed data to list
         measurement = PV(abs_date, pv_inertial.getPosition(), pv_inertial.getVelocity(), 1.0, 1.0, 1.0, satellite)
         list_measurements.append(measurement)
-print(list_measurements)
 
 # Creating TLE initial guess
-tle_line1 = "1 00005U 58002B   20062.53480374  .00000023  00000-0  28098-4 0  9991"
-tle_line2 = "2 00005  34.2682 348.7242 1849677 331.7664  19.3264 10.82419157413667"
+with open("../../../TLE/TeLEOS-1/TLE TeLEOS-1 20250611 Spacetrack.txt", "r") as file:
+    next(file)
+    file_content = file.readlines()
+    tle_line1 = file_content[0][:-1]
+    tle_line2 = file_content[1]
 tle_initial = TLE(tle_line1, tle_line2)
 print(tle_initial)
 
