@@ -1,3 +1,4 @@
+# Imports packages
 import csv
 from datetime import datetime
 import orekit
@@ -8,7 +9,7 @@ from org.orekit.utils import PVCoordinates, IERSConventions
 from org.orekit.estimation.measurements import PV, ObservableSatellite
 from org.hipparchus.geometry.euclidean.threed import Vector3D
 
-# Initialises JDK and orekit library data
+# Initialises JVM and orekit library data
 orekit.initVM()
 setup_orekit_curdir(from_pip_library=True)
 
