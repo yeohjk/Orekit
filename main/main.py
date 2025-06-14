@@ -60,7 +60,7 @@ print("Initial TLE")
 print(tle_initial)
 
 # Creates TLE Propagator Builder
-builder = TLEPropagatorBuilder(tle_initial, PositionAngleType.TRUE, 1.0, LeastSquaresTleGenerationAlgorithm())
+builder = TLEPropagatorBuilder(tle_initial, PositionAngleType.MEAN, 1.0, LeastSquaresTleGenerationAlgorithm())
 
 # Creates optimizer and estimator
 estimator = BatchLSEstimator(LevenbergMarquardtOptimizer(), builder)
