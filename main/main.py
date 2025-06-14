@@ -21,7 +21,7 @@ setup_orekit_curdir(from_pip_library=True)
 
 # Sets variables needed for data transformation
 utc = TimeScalesFactory.getUTC()
-inertial = FramesFactory.getEME2000()
+inertial = FramesFactory.getTEME()
 ecef = FramesFactory.getITRF(IERSConventions.IERS_2010, True)
 satellite = ObservableSatellite(0)
 list_measurements = []
@@ -31,7 +31,7 @@ with open("data/WOD_GPS_Test_Data_ 100525.csv","r") as file:
     file_content = csv.reader(file)
     next(file_content)
     for row in file_content:
-        # Extractsand transforms date time
+        # Extracts and transforms date time
         datetime_str = row[0]
         datetime_obj = datetime.strptime(datetime_str, '%d/%m/%Y %H:%M:%S')
         year, month, day = datetime_obj.year, datetime_obj.month, datetime_obj.day
@@ -76,6 +76,6 @@ print("Revised TLE")
 print(tlepropagator_estimated_tle.toString())
 
 # Output to new TLE txt document
-with open("../../../TLE/TeLEOS-1/TLE TeLEOS-1 20250509 Orekit.txt", "w") as file:
+with open("../../../TLE/TeLEOS-1/TLE TeLEOS-1 20250509 Orekit_TEME.txt", "w") as file:
     file.write(f"TeLEOS-1\n{tlepropagator_estimated_tle.toString()}")
 
