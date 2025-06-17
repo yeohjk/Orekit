@@ -27,7 +27,7 @@ satellite = ObservableSatellite(0)
 list_measurements = []
 
 # Extracts, transforms and loads data
-with open("data/WOD_GPS_Test_Data_ 100525.csv","r") as file:
+with open("data/WOD_GPS_Test_Data_ 100525_0.5.csv","r") as file:
     file_content = csv.reader(file)
     next(file_content)
     for row in file_content:
@@ -76,6 +76,6 @@ print("Revised TLE")
 print(tlepropagator_estimated_tle.toString())
 
 # Output to new TLE txt document
-with open("../../../TLE/TeLEOS-1/TLE TeLEOS-1 20250509 Orekit_TEME.txt", "w") as file:
+with open("../../../TLE/TeLEOS-1/TLE TeLEOS-1 20250509 Orekit_TEME_0.5.txt", "w") as file:
     file.write(f"TeLEOS-1\n{tlepropagator_estimated_tle.toString()}")
 
