@@ -2,9 +2,14 @@
 from datetime import datetime
 from math import radians, pi
 import matplotlib.pyplot as plt
+import os
 
 import orekit
 from orekit.pyhelpers import setup_orekit_curdir
+
+# Initialises JVM and orekit library data
+orekit.initVM()
+setup_orekit_curdir(from_pip_library=True)
 
 from org.orekit.frames import FramesFactory, TopocentricFrame
 from org.orekit.bodies import OneAxisEllipsoid, GeodeticPoint
@@ -12,16 +17,20 @@ from org.orekit.time import TimeScalesFactory, AbsoluteDate
 from org.orekit.utils import IERSConventions, Constants, PVCoordinatesProvider
 from org.orekit.propagation.analytical.tle import TLE, TLEPropagator
 
-# Initialises JVM and orekit library data
-orekit.initVM()
-setup_orekit_curdir(from_pip_library=True)
+# Opens file directory to search for input TLE file
+print(f"Files in Directory TLE")
+for file_item in os.listdir("../../../TLE/TeLEOS-1"):
+    print(file_item)
+input_file_name = input("Input TLE file name with txt extension: ")
+input_file_path = f"../../../TLE/TeLEOS-1/{input_file_name}"
+print("Input file path:", input_file_path)
 
 # Sets up TLE object
-with open("../../../TLE/TeLEOS-1/TLE TeLEOS-1 20250509 Spacetrack.txt", "r") as file:
+with open(input_file_path, "r") as file:
     next(file)
-    file_content = file.readlines()
+    file_content = file.read().splitlines()
     print(file_content)
-    tle_line1 = file_content[0][:-1]
+    tle_line1 = file_content[0]
     tle_line2 = file_content[1]
 
 tle_object = TLE(tle_line1, tle_line2)
@@ -79,7 +88,7 @@ while extrapDate.compareTo(finalDate) <= 0.0:
 
 # Plots for elevation and azimuth values
 plt.plot(az_el)
-plt.ylim(5,360)
+plt.ylim(5, 360)
 plt.title('Azimuth and Elevation')
 plt.grid(True)
 plt.show()
