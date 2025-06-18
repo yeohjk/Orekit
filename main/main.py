@@ -1,5 +1,6 @@
 # Imports packages
 import csv
+import os
 from datetime import datetime
 import orekit
 from orekit.pyhelpers import setup_orekit_curdir
@@ -26,8 +27,16 @@ ecef = FramesFactory.getITRF(IERSConventions.IERS_2010, True)
 satellite = ObservableSatellite(0)
 list_measurements = []
 
+# Opens file directory to search for input csv file with measurement data
+print(f"Files in Directory data")
+for file_item in os.listdir("data"):
+    print(file_item)
+input_file_name = input("Input data file name with csv extension: ")
+input_file_path = f"data/{input_file_name}"
+print("Input file path:", input_file_path)
+
 # Extracts, transforms and loads data
-with open("data/WOD_GPS_Test_Data_ 100525_0.5.csv","r") as file:
+with open(input_file_path,"r") as file:
     file_content = csv.reader(file)
     next(file_content)
     for row in file_content:
@@ -49,11 +58,19 @@ with open("data/WOD_GPS_Test_Data_ 100525_0.5.csv","r") as file:
         measurement = PV(abs_date, pv_inertial.getPosition(), pv_inertial.getVelocity(), 1.0, 1.0, 1.0, satellite)
         list_measurements.append(measurement)
 
+# Opens file directory to search for input TLE file
+print(f"Files in Directory TLE")
+for file_item in os.listdir("../../../TLE/TeLEOS-1"):
+    print(file_item)
+input_file_name = input("Input TLE file name with txt extension: ")
+input_file_path = f"../../../TLE/TeLEOS-1/{input_file_name}"
+print("Input file path:", input_file_path)
+
 # Creates TLE initial guess
-with open("../../../TLE/TeLEOS-1/TLE TeLEOS-1 20250509 Spacetrack.txt", "r") as file:
+with open(input_file_path, "r") as file:
     next(file)
-    file_content = file.readlines()
-    tle_line1 = file_content[0][:-1]
+    file_content = file.read().splitlines()
+    tle_line1 = file_content[0]
     tle_line2 = file_content[1]
 tle_initial = TLE(tle_line1, tle_line2)
 print("Initial TLE")
@@ -77,5 +94,6 @@ print(tlepropagator_estimated_tle.getLine1())
 print(tlepropagator_estimated_tle.getLine2())
 
 # Output to new TLE txt document
-with open("../../../TLE/TeLEOS-1/TLE TeLEOS-1 20250509 Orekit_TEME_0.5.txt", "w") as file:
+output_file_path = input_file_path.replace("Spacetrack", "Orekit_TEME_0.5")
+with open(output_file_path, "w") as file:
     file.write(f"TeLEOS-1\n{tlepropagator_estimated_tle.getLine1()}\n{tlepropagator_estimated_tle.getLine2()}")
