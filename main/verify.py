@@ -29,7 +29,6 @@ print("Input file path:", input_file_path)
 with open(input_file_path, "r") as file:
     next(file)
     file_content = file.read().splitlines()
-    print(file_content)
     tle_line1 = file_content[0]
     tle_line2 = file_content[1]
 
