@@ -1,9 +1,8 @@
-# Imports packages
+# Imports packages for initialisation
 from datetime import datetime
 from math import radians, pi
 import matplotlib.pyplot as plt
 import os
-
 import orekit
 from orekit.pyhelpers import setup_orekit_curdir
 
@@ -11,6 +10,7 @@ from orekit.pyhelpers import setup_orekit_curdir
 orekit.initVM()
 setup_orekit_curdir(from_pip_library=True)
 
+# Imports orekit library packages
 from org.orekit.frames import FramesFactory, TopocentricFrame
 from org.orekit.bodies import OneAxisEllipsoid, GeodeticPoint
 from org.orekit.time import TimeScalesFactory, AbsoluteDate

@@ -1,9 +1,15 @@
-# Imports packages
+# Imports packages for initialisation
 import csv
 import os
 from datetime import datetime
 import orekit
 from orekit.pyhelpers import setup_orekit_curdir
+
+# Initialises JVM and orekit library data
+orekit.initVM()
+setup_orekit_curdir(from_pip_library=True)
+
+# Imports orekit library packages
 from org.orekit.time import AbsoluteDate, TimeScalesFactory
 from org.orekit.frames import FramesFactory
 from org.orekit.utils import PVCoordinates, IERSConventions
@@ -16,11 +22,7 @@ from org.orekit.propagation.analytical.tle.generation import LeastSquaresTleGene
 from org.hipparchus.optim.nonlinear.vector.leastsquares import LevenbergMarquardtOptimizer
 from org.orekit.estimation.leastsquares import BatchLSEstimator
 
-# Initialises JVM and orekit library data
-orekit.initVM()
-setup_orekit_curdir(from_pip_library=True)
-
-# Sets variables needed for data transformation
+# Assigns variables needed for data transformation
 utc = TimeScalesFactory.getUTC()
 inertial = FramesFactory.getTEME()
 ecef = FramesFactory.getITRF(IERSConventions.IERS_2010, True)
