@@ -79,7 +79,7 @@ while extrapDate.compareTo(finalDate) <= 0.0:
 
 # Plots for elevation and azimuth values
 plt.plot(az_el)
-plt.ylim(0,360)
+plt.ylim(5,360)
 plt.title('Azimuth and Elevation')
 plt.grid(True)
 plt.show()
