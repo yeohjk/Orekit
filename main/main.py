@@ -73,9 +73,9 @@ estimator.setMaxEvaluations(1000)
 propagator_estimated_tle = estimator.estimate()[0]
 tlepropagator_estimated_tle = TLEPropagator.cast_(propagator_estimated_tle).getTLE()
 print("Revised TLE")
-print(tlepropagator_estimated_tle.toString())
+print(tlepropagator_estimated_tle.getLine1())
+print(tlepropagator_estimated_tle.getLine2())
 
 # Output to new TLE txt document
 with open("../../../TLE/TeLEOS-1/TLE TeLEOS-1 20250509 Orekit_TEME_0.5.txt", "w") as file:
-    file.write(f"TeLEOS-1\n{tlepropagator_estimated_tle.toString()}")
-
+    file.write(f"TeLEOS-1\n{tlepropagator_estimated_tle.getLine1()}\n{tlepropagator_estimated_tle.getLine2()}")
