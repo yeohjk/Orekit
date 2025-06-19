@@ -30,11 +30,11 @@ satellite = ObservableSatellite(0)
 list_measurements = []
 
 # Opens file directory to search for input csv file with measurement data
-print(f"Files in Directory data")
-for file_item in os.listdir("data"):
+print(f"Files in Directory data_proc")
+for file_item in os.listdir("data_proc"):
     print(file_item)
 input_file_name = input("Input data file name with csv extension: ")
-input_file_path = f"data/{input_file_name}"
+input_file_path = f"data_proc/{input_file_name}"
 print("Input file path:", input_file_path)
 
 # Extracts, transforms and loads data

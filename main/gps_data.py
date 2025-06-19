@@ -21,7 +21,7 @@ satellite = ObservableSatellite(0)
 list_measurements = []
 
 # Extracts, transforms and loads data
-with open("data/WOD_GPS_Test_Data_ 100525.csv","r") as file:
+with open("data_proc/WOD_GPS_Test_Data_ 100525.csv","r") as file:
     file_content = csv.reader(file)
     next(file_content)
     for row in file_content:
