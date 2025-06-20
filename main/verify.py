@@ -44,9 +44,13 @@ class verify_tle():
         return
     def setup_datetime(self):
         # Sets up start and end date time
-        self.extrapDate = AbsoluteDate(2025, 5, 10, 12, 0, 0.0, TimeScalesFactory.getUTC())
-        self.finalDate = self.extrapDate.shiftedBy(60.0*60*24) # seconds
-        self.step_size = 10.0 # seconds
+        datetime_obj = datetime.strptime(input("Propagation Start Date Time in YYYY/MM/DD HH:MM:SS: "), '%Y/%m/%d %H:%M:%S')
+        year, month, day = datetime_obj.year, datetime_obj.month, datetime_obj.day
+        hour, minute, second = datetime_obj.hour, datetime_obj.minute, float(datetime_obj.second)
+        self.extrapDate = AbsoluteDate(year, month, day, hour, minute, second, TimeScalesFactory.getUTC())
+        num_days = int(input("How many days to propagate forward by: "))
+        self.finalDate = self.extrapDate.shiftedBy(60.0*60*24*num_days) # seconds
+        self.step_size = float(input("Step Size in seconds: ")) # seconds
         return
     def setup_tle(self):
         self.tle_reference = tle_verify("Reference")
@@ -54,7 +58,8 @@ class verify_tle():
         self.tle_list = [self.tle_reference, self.tle_target]
         return
     def propagation(self):
-        # Propagates TLE and generates values.
+        # Propagates TLE and generates values
+        print(f"Starting Propagation from start date time {self.extrapDate}")
         while self.extrapDate.compareTo(self.finalDate) <= 0.0:
             # Cycles through TLE
             for tle_obj in self.tle_list:
@@ -73,6 +78,7 @@ class verify_tle():
                 tle_obj.az_el.append((az_tmp, el_tmp))
             # Pushes date time forward by step_size
             self.extrapDate = self.extrapDate.shiftedBy(self.step_size)
+        print(f"Ending Propagation with end date time {self.extrapDate}")
         return
     def plots(self):
         # Cycles through TLE
@@ -80,7 +86,7 @@ class verify_tle():
             # Plots for elevation and azimuth values
             plt.plot(tle_obj.az_el)
             plt.ylim(5, 360)
-            plt.title('Azimuth and Elevation')
+            plt.title(f'Azimuth and Elevation for {tle_obj.tle_type}')
             plt.grid(True)
             plt.show()
         return
