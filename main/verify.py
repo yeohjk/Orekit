@@ -53,9 +53,12 @@ class verify_tle():
         self.step_size = float(input("Step Size in seconds: ")) # seconds
         return
     def setup_tle(self):
-        self.tle_reference = tle_verify("Reference")
-        self.tle_target = tle_verify("Target")
-        self.tle_list = [self.tle_reference, self.tle_target]
+        tle_reference = tle_verify("Reference")
+        self.tle_list = [tle_reference, ]
+        num_tle = int(input("Number of TLE to verify: "))
+        for num in range(num_tle):
+            tle_target = tle_verify("Target")
+            self.tle_list.append(tle_target)
         return
     def propagation(self):
         # Propagates TLE and generates values
