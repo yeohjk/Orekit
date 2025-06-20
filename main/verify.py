@@ -16,6 +16,7 @@ from org.orekit.bodies import OneAxisEllipsoid, GeodeticPoint
 from org.orekit.time import TimeScalesFactory, AbsoluteDate
 from org.orekit.utils import IERSConventions, Constants, PVCoordinatesProvider
 from org.orekit.propagation.analytical.tle import TLE, TLEPropagator
+from org.hipparchus.geometry.euclidean.threed import Vector3D
 
 # Creates class verify_tle:
 class verify_tle():
@@ -25,6 +26,7 @@ class verify_tle():
         self.setup_datetime()
         self.setup_tle()
         self.propagation()
+        self.processing()
         self.plots()
         return
     def setup_frames(self):
@@ -62,6 +64,7 @@ class verify_tle():
         return
     def propagation(self):
         # Propagates TLE and generates values
+        self.num_data_points = 0
         print(f"Starting Propagation from start date time {self.extrapDate}")
         while self.extrapDate.compareTo(self.finalDate) <= 0.0:
             # Cycles through TLE
@@ -80,17 +83,28 @@ class verify_tle():
                                 self.inertialFrame,
                                 self.extrapDate)*180.0/pi # converts to degrees
                 tle_obj.el.append(el_val)
+            # Accumulates through each loop of time
+            self.num_data_points += 1
             # Pushes date time forward by step_size
             self.extrapDate = self.extrapDate.shiftedBy(self.step_size)
         print(f"Ending Propagation with end date time {self.extrapDate}")
         return
+    def processing(self):
+        # Cycles through indices
+        for ind in range(self.num_data_points):
+            ref_vec = self.tle_list[0].pos[ind]
+            # Cycles through target TLE
+            for tle_obj in self.tle_list[1:]:
+                pos_vec = tle_obj.pos[ind]
+                norm = Vector3D.distance(ref_vec, pos_vec)
+                tle_obj.diff_norm.append(norm)
+        return
     def plots(self):
         # Cycles through TLE
-        for tle_obj in self.tle_list:
-            # Plots for elevation and azimuth values
-            plt.plot(tle_obj.el)
-            plt.ylim(5, 360)
-            plt.title(f'Azimuth and Elevation for {tle_obj.tle_type}')
+        for tle_obj in self.tle_list[1:]:
+            # Plots of norm distance error values 
+            plt.plot(tle_obj.diff_norm)
+            plt.title(f'Norm distance error for {tle_obj.input_file_name}')
             plt.grid(True)
             plt.show()
         return
@@ -133,6 +147,7 @@ class tle_verify():
         self.az = []
         self.el = []
         self.pos = []
+        self.diff_norm = []
         return
 
 x = verify_tle()
