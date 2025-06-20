@@ -43,8 +43,9 @@ finalDate = extrapDate.shiftedBy(60.0*60*24) #seconds
 el=[]
 pos=[]
 
+provider = PVCoordinatesProvider.cast_(propagator)
+
 while extrapDate.compareTo(finalDate) <= 0.0:  
-    provider = PVCoordinatesProvider.cast_(propagator)
     pv = provider.getPVCoordinates(extrapDate, inertialFrame)
     pos_tmp = pv.getPosition()
     pos.append((pos_tmp.getX(),pos_tmp.getY(),pos_tmp.getZ()))
