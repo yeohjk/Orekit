@@ -55,8 +55,8 @@ class verify_tle():
     def setup_tle(self):
         tle_reference = tle_verify("Reference")
         self.tle_list = [tle_reference, ]
-        num_tle = int(input("Number of TLE to verify: "))
-        for num in range(num_tle):
+        self.num_tle = int(input("Number of TLE to verify: "))
+        for num in range(self.num_tle):
             tle_target = tle_verify("Target")
             self.tle_list.append(tle_target)
         return
@@ -69,16 +69,17 @@ class verify_tle():
                 # Propagates to set date time and generates PV object
                 pv = tle_obj.provider.getPVCoordinates(self.extrapDate, self.inertialFrame)
                 # Extracts PV values
-                pos_tmp = pv.getPosition()
-                tle_obj.pos.append((pos_tmp.getX(),pos_tmp.getY(),pos_tmp.getZ()))            
+                pos_vec = pv.getPosition()
+                tle_obj.pos.append(pos_vec)            
                 # Extracts azimuth and elevation values
-                az_tmp = self.station_frame.getAzimuth(pos_tmp,
+                az_val = self.station_frame.getAzimuth(pos_vec,
                                 self.inertialFrame,
                                 self.extrapDate)*180.0/pi # converts to degrees
-                el_tmp = self.station_frame.getElevation(pos_tmp,
+                tle_obj.az.append(az_val)
+                el_val = self.station_frame.getElevation(pos_vec,
                                 self.inertialFrame,
                                 self.extrapDate)*180.0/pi # converts to degrees
-                tle_obj.az_el.append((az_tmp, el_tmp))
+                tle_obj.el.append(el_val)
             # Pushes date time forward by step_size
             self.extrapDate = self.extrapDate.shiftedBy(self.step_size)
         print(f"Ending Propagation with end date time {self.extrapDate}")
@@ -87,7 +88,7 @@ class verify_tle():
         # Cycles through TLE
         for tle_obj in self.tle_list:
             # Plots for elevation and azimuth values
-            plt.plot(tle_obj.az_el)
+            plt.plot(tle_obj.el)
             plt.ylim(5, 360)
             plt.title(f'Azimuth and Elevation for {tle_obj.tle_type}')
             plt.grid(True)
@@ -129,7 +130,8 @@ class tle_verify():
         return
     def gen_val_creation(self):
         # Sets up azimuth, elevation and position (EME2000 frame) lists
-        self.az_el = []
+        self.az = []
+        self.el = []
         self.pos = []
         return
 
