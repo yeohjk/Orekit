@@ -2,12 +2,12 @@
 import openpyxl 
 
 # Sets up lists
-list_sheets = ["0x80070000 - Data Order 1",\
-               "0x80080000 - Data Order 1",\
-               "0x80090000 - Data Order 1",\
-               "0x800A0000 - Data Order 1",\
-               "0x800B0000 - Data Order 1",\
-               "0x800C0000 - Data Order 1",]
+dict_sheets = {"pos_x":"0x80070000 - Data Order 1",\
+               "pos_y":"0x80080000 - Data Order 1",\
+               "pos_z":"0x80090000 - Data Order 1",\
+               "vel_x":"0x800A0000 - Data Order 1",\
+               "vel_y":"0x800B0000 - Data Order 1",\
+               "vel_z":"0x800C0000 - Data Order 1"}
 
 # Loads workbook
 wb = openpyxl.load_workbook('../../Data/TELEOS_1/WOD/WOD_SID_10_20May.xlsx')
