@@ -17,6 +17,16 @@ dict_lists = {"datetime":[],\
                "vel_y":[],\
                "vel_z":[]}
 
+# Transforms position data units of dm to m
+def pos_transform(data_raw):
+    data_trans = data_raw/10
+    return data_trans
+
+# Transforms velocity data units of mm/s to m/s
+def vel_transform(data_raw):
+    data_trans = data_raw/1000
+    return data_trans
+
 # Loads workbook
 wb = openpyxl.load_workbook('../../Data/TELEOS_1/WOD/WOD_SID_10_20May.xlsx')
 
