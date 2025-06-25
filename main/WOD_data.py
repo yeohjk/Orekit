@@ -50,6 +50,7 @@ class ETL:
                             "vel_x":self.vel_transform,\
                             "vel_y":self.vel_transform,\
                             "vel_z":self.vel_transform }
+        self.dict_dt_ind = {}
     # Transforms position data units of dm to m
     def pos_transform(self, data_raw):
         data_trans = data_raw/10
@@ -84,38 +85,46 @@ class ETL:
         return
     # Generates stop indices for datetime list seperating data based on day
     def setup_datetime_ind(self):
-        self.ls_dt_ind = []
         dt_prev  = self.dict_lists["datetime"][0]
         # Loops through indices of datetime list
         for ind in range(self.num_datapoints):    
             dt = self.dict_lists["datetime"][ind]
             if dt.date() != dt_prev.date():
-                self.ls_dt_ind.append(ind)
+                self.dict_dt_ind[ind] = dt_prev.strftime("%Y%m%d")
                 dt_prev = dt
-        self.ls_dt_ind.append(self.num_datapoints)
-        print(f"Number of days of data: {len(self.ls_dt_ind)}\n")
+        self.dict_dt_ind[self.num_datapoints] = self.dict_lists["datetime"][-1].strftime("%Y%m%d")
+        print(f"Number of days of data: {len(self.dict_dt_ind)}\n")
         return
     # Loads data to output csv file
     def load_to_csv(self):
-        print("Loading data to csv")
+        print("Loading data to csv files")
         self.output_file_directory = "../../Data/TELEOS_1/WOD_proc"
-        self.output_file_name = "WOD_GPS_Test_Data_PVT.csv"
-        self.output_file_path = f"{self.output_file_directory}/{self.output_file_name}"
-        with open(self.output_file_path, "w", newline="") as file:
-            writer = csv.writer(file)
-            writer.writerow(["Time Stamp",\
-                             "X (m)",\
-                             "Y (m)",\
-                             "Z (m)",\
-                             "Vel X (m/s)",\
-                             "Vel Y (m/s)",\
-                             "Vel Z (m/s)"])
-            for ind in range(self.num_datapoints):
-                row_entry = []
-                for field in self.dict_lists:
-                    row_entry.append(self.dict_lists[field][ind])
-                writer.writerow(row_entry)
-        print("Finished loading data to csv")
+        # Sets up first start index
+        ind_start = 0
+        # Loops through stop indices for datetime list
+        for ind_stop in self.dict_dt_ind:
+            # Formats date into output file name
+            date = self.dict_dt_ind[ind_stop]
+            self.output_file_name = f"WOD_GPS_Test_Data_PVT_{date}.csv"
+            self.output_file_path = f"{self.output_file_directory}/{self.output_file_name}"
+            print(f"Writing data to csv file {self.output_file_name}")
+            # Writes data to output file
+            with open(self.output_file_path, "w", newline="") as file:
+                writer = csv.writer(file)
+                writer.writerow(["Time Stamp",\
+                                "X (m)",\
+                                "Y (m)",\
+                                "Z (m)",\
+                                "Vel X (m/s)",\
+                                "Vel Y (m/s)",\
+                                "Vel Z (m/s)"])
+                for ind in range(ind_start, ind_stop):
+                    row_entry = []
+                    for field in self.dict_lists:
+                        row_entry.append(self.dict_lists[field][ind])
+                    writer.writerow(row_entry)
+            ind_start = ind_stop
+        print("Finished loading data to csv files")
         return
 
 # Creates ETL object which executes ETL process
