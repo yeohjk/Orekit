@@ -7,12 +7,15 @@ import csv
 # Defines class ETL
 class ETL:
     def __init__(self):
+        print("Beginning ETL Process")
         self.file_selector()
         self.file_loader()
         self.setup_dict()
         self.ext_trans()
         self.ext_trans_time()
+        self.setup_datetime_ind()
         self.load_to_csv()
+        print("Completed ETL Process")
         return
     def file_selector(self):
         # Opens file directory to search for input WOD xlsx file
@@ -79,8 +82,12 @@ class ETL:
         self.num_datapoints = len(self.dict_lists["datetime"])
         print("Extracted all datetime data")
         return
+    # Generates indices for values
+    def setup_datetime_ind(self):
+        return
     # Loads data to output csv file
     def load_to_csv(self):
+        print("Loading data to csv")
         self.output_file_directory = "../../Data/TELEOS_1/WOD_proc"
         with open(f"{self.output_file_directory}/WOD_GPS_Test_Data_PVT.csv", "w", newline="") as file:
             writer = csv.writer(file)
@@ -96,6 +103,7 @@ class ETL:
                 for field in self.dict_lists:
                     row_entry.append(self.dict_lists[field][ind])
                 writer.writerow(row_entry)
+        print("Finished loading data to csv")
         return
 
 # Creates ETL object which executes ETL process
