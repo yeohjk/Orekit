@@ -69,7 +69,7 @@ class ETL:
                 val_raw = self.ws.cell(row=row_num, column=1).value
                 val_trans = trans_mtd(val_raw)
                 self.dict_lists[field].append(val_trans)
-        print("Extracted and transformed all PV data")
+        print("Extracted and transformed all PV data\n")
         return
     # Extracts and transforms datetime from input file 
     def ext_trans_time(self):
@@ -80,7 +80,7 @@ class ETL:
             val_raw = self.ws.cell(row=row_num, column=8).value
             self.dict_lists["datetime"].append(val_raw)
         self.num_datapoints = len(self.dict_lists["datetime"])
-        print("Extracted all datetime data")
+        print("Extracted all datetime data\n")
         return
     # Generates stop indices for datetime list seperating data based on day
     def setup_datetime_ind(self):
@@ -93,7 +93,7 @@ class ETL:
                 self.ls_dt_ind.append(ind)
                 dt_prev = dt
         self.ls_dt_ind.append(self.num_datapoints)
-        print(f"Number of days of data: {len(self.ls_dt_ind)}")
+        print(f"Number of days of data: {len(self.ls_dt_ind)}\n")
         return
     # Loads data to output csv file
     def load_to_csv(self):
