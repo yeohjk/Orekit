@@ -82,8 +82,18 @@ class ETL:
         self.num_datapoints = len(self.dict_lists["datetime"])
         print("Extracted all datetime data")
         return
-    # Generates indices for values
+    # Generates stop indices for datetime list seperating data based on day
     def setup_datetime_ind(self):
+        self.ls_dt_ind = []
+        dt_prev  = self.dict_lists["datetime"][0]
+        # Loops through indices of datetime list
+        for ind in range(self.num_datapoints):    
+            dt = self.dict_lists["datetime"][ind]
+            if dt.date() != dt_prev.date():
+                self.ls_dt_ind.append(ind)
+                dt_prev = dt
+        self.ls_dt_ind.append(self.num_datapoints)
+        print(f"Number of days of data: {len(self.ls_dt_ind)}")
         return
     # Loads data to output csv file
     def load_to_csv(self):
