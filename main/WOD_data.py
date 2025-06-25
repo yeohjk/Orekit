@@ -81,7 +81,8 @@ class ETL:
         return
     # Loads data to output csv file
     def load_to_csv(self):
-        with open("../../Data/TELEOS_1/WOD/WOD_GPS_Test_Data_PVT.csv", "w", newline="") as file:
+        self.output_file_directory = "../../Data/TELEOS_1/WOD_proc"
+        with open(f"{self.output_file_directory}/WOD_GPS_Test_Data_PVT.csv", "w", newline="") as file:
             writer = csv.writer(file)
             writer.writerow(["Time Stamp",\
                              "X (m)",\
