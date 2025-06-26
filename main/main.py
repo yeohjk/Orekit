@@ -45,7 +45,7 @@ with open(input_file_path,"r") as file:
     for row in file_content:
         # Extracts and transforms date time
         datetime_str = row[0]
-        datetime_obj = datetime.strptime(datetime_str, '%d/%m/%Y %H:%M:%S')
+        datetime_obj = datetime.strptime(datetime_str, '%Y-%m-%d %H:%M:%S')
         year, month, day = datetime_obj.year, datetime_obj.month, datetime_obj.day
         hour, minute, second = datetime_obj.hour, datetime_obj.minute, float(datetime_obj.second)
         abs_date = AbsoluteDate(year, month, day, hour, minute, second, utc)
@@ -97,6 +97,6 @@ print(tlepropagator_estimated_tle.getLine1())
 print(tlepropagator_estimated_tle.getLine2())
 
 # Output to new TLE txt document
-output_file_path = input_file_path.replace("Spacetrack", "Orekit_TEME_PVT_0.5")
+output_file_path = input_file_path.replace("Spacetrack", "Orekit_TEME_PVT_1")
 with open(output_file_path, "w") as file:
     file.write(f"TeLEOS-1\n{tlepropagator_estimated_tle.getLine1()}\n{tlepropagator_estimated_tle.getLine2()}")
