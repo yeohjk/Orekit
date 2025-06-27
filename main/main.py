@@ -97,6 +97,6 @@ print(tlepropagator_estimated_tle.getLine1())
 print(tlepropagator_estimated_tle.getLine2())
 
 # Output to new TLE txt document
-output_file_path = input_file_path.replace("Spacetrack", "Orekit_TEME_PVT_1")
+output_file_path = input_file_path.replace("Spacetrack", "Orekit_TEME_PVT_D1")
 with open(output_file_path, "w") as file:
     file.write(f"TeLEOS-1\n{tlepropagator_estimated_tle.getLine1()}\n{tlepropagator_estimated_tle.getLine2()}")
