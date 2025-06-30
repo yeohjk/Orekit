@@ -90,6 +90,7 @@ class verify_tle():
         print(f"Ending Propagation with end date time {self.extrapDate}")
         return
     def processing(self):
+        # Generates norm distance error for position vector data for each TLE wrt reference TLE
         # Cycles through indices
         for ind in range(self.num_data_points):
             ref_vec = self.tle_list[0].pos[ind]
