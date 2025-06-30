@@ -1,5 +1,5 @@
 # Imports packages for initialisation
-from datetime import datetime
+from datetime import datetime, timedelta
 from math import radians, pi
 import matplotlib.pyplot as plt
 import os
@@ -46,12 +46,12 @@ class verify_tle():
         return
     def setup_datetime(self):
         # Sets up start and end date time
-        datetime_obj = datetime.strptime(input("Propagation Start Date Time in YYYY/MM/DD HH:MM:SS: "), '%Y/%m/%d %H:%M:%S')
-        year, month, day = datetime_obj.year, datetime_obj.month, datetime_obj.day
-        hour, minute, second = datetime_obj.hour, datetime_obj.minute, float(datetime_obj.second)
+        self.datetime_obj = datetime.strptime(input("Propagation Start Date Time in YYYY/MM/DD HH:MM:SS: "), '%Y/%m/%d %H:%M:%S')
+        year, month, day = self.datetime_obj.year, self.datetime_obj.month, self.datetime_obj.day
+        hour, minute, second = self.datetime_obj.hour, self.datetime_obj.minute, float(self.datetime_obj.second)
         self.extrapDate = AbsoluteDate(year, month, day, hour, minute, second, TimeScalesFactory.getUTC())
-        num_days = int(input("How many days to propagate forward by: "))
-        self.finalDate = self.extrapDate.shiftedBy(60.0*60*24*num_days) # seconds
+        self.num_days = int(input("How many days to propagate forward by: "))
+        self.finalDate = self.extrapDate.shiftedBy(60.0*60*24*self.num_days) # seconds
         self.step_size = float(input("Step Size in seconds: ")) # seconds
         return
     def setup_tle(self):
@@ -101,13 +101,28 @@ class verify_tle():
                 tle_obj.diff_norm.append(norm)
         return
     def plots(self):
-        # Cycles through TLE
+        # Generates plot of distance error norm values for each target TLE
+        # Generate end datetime obj for propagation end datetime
+        time_diff = timedelta(days=self.num_days)
+        dt_end = self.datetime_obj + time_diff
+        # Names title and axes
+        plt.title(f'Distance error norm (m) vs Time (s)\
+                  \nReference TLE: {self.tle_list[0].input_file_name}\
+                  \nPropagation Start Datetime: {self.datetime_obj}\
+                  \nPropagation End Datetime: {dt_end}\
+                  \nStep Size (s): {self.step_size}\
+                  ', loc = 'left')
+        plt.xlabel("Time (s)")
+        plt.ylabel("Distance error norm (m)")
+        # Cycles through list of target TLEs
         for tle_obj in self.tle_list[1:]:
-            # Plots of norm distance error values 
-            plt.plot(tle_obj.diff_norm)
-            plt.title(f'Norm distance error for {tle_obj.input_file_name}')
-            plt.grid(True)
-            plt.show()
+            # Plots distance error norm values for target TLE
+            plt.plot(tle_obj.diff_norm, label=f'{tle_obj.input_file_name}')
+        # Adds grid and legend to plot
+        plt.grid(True)
+        plt.legend()
+        # Shows plot GUI
+        plt.show()
         return
 
 # Creates class tle_object:
