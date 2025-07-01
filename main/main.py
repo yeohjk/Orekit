@@ -86,7 +86,7 @@ builder = TLEPropagatorBuilder(tle_initial, PositionAngleType.MEAN, 1.0, LeastSq
 estimator = BatchLSEstimator(LevenbergMarquardtOptimizer(), builder)
 for measurement in list_measurements:
     estimator.addMeasurement(measurement)
-estimator.setMaxIterations(100)
+estimator.setMaxIterations(1000)
 estimator.setMaxEvaluations(1000)
 
 # Estimates new TLE based on measurement data
