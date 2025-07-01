@@ -1,6 +1,6 @@
 # Imports packages
 import openpyxl 
-from datetime import datetime
+from datetime import datetime, time
 import os
 import csv
 
@@ -14,7 +14,8 @@ class ETL:
         self.ext_trans()
         self.ext_trans_time()
         self.setup_datetime_ind()
-        self.load_to_csv()
+        self.load_to_csv_D1()
+        self.load_to_csv_D05()
         print("Completed ETL Process")
         return
     def file_selector(self):
@@ -95,9 +96,9 @@ class ETL:
         self.dict_dt_ind[self.num_datapoints] = self.dict_lists["datetime"][-1].strftime("%Y%m%d")
         print(f"Number of days of data: {len(self.dict_dt_ind)}\n")
         return
-    # Loads data to output csv file
-    def load_to_csv(self):
-        print("Loading data to csv files")
+    # Loads data to output csv files for each day's worth of WOD GPS data
+    def load_to_csv_D1(self):
+        print("Loading daily data to csv files")
         self.output_file_directory = "../../Data/TELEOS_1/WOD_proc"
         # Sets up first start index
         ind_start = 0
@@ -124,7 +125,49 @@ class ETL:
                         row_entry.append(self.dict_lists[field][ind])
                     writer.writerow(row_entry)
             ind_start = ind_stop
-        print("Finished loading data to csv files")
+        print("Finished loading daily data to csv files")
+        return
+    # Loads data to output csv files for each day's half day worth of WOD GPS data
+    def load_to_csv_D05(self):
+        print("Loading half day of data to csv files")
+        self.output_file_directory = "../../Data/TELEOS_1/WOD_proc"
+        # Sets up first start index
+        ind_start = 0
+        time_cutoff = time(12)
+        # Loops through stop indices for datetime list
+        for ind_stop in self.dict_dt_ind:
+            # Formats date into output file name
+            date = self.dict_dt_ind[ind_stop]
+            self.output_file_name = f"WOD_GPS_Test_Data_PVT_{date}_0.5.csv"
+            self.output_file_path = f"{self.output_file_directory}/{self.output_file_name}"
+            print(f"Writing data to csv file {self.output_file_name}")
+            # Writes data to output file
+            with open(self.output_file_path, "w", newline="") as file:
+                writer = csv.writer(file)
+                writer.writerow(["Time Stamp",\
+                                "X (m)",\
+                                "Y (m)",\
+                                "Z (m)",\
+                                "Vel X (m/s)",\
+                                "Vel Y (m/s)",\
+                                "Vel Z (m/s)"])
+                # Conditional check if data starts from before UTC 12
+                if self.dict_lists["datetime"][ind_start].time() < time_cutoff\
+                    and self.dict_lists["datetime"][ind_stop-1].time() > time_cutoff:
+                    for ind in range(ind_start, ind_stop):    
+                        if self.dict_lists["datetime"][ind].time() > time_cutoff:
+                            ind_half_stop = ind
+                            break
+                else:
+                    ind_half_stop = ind_stop
+                # Extracts only half day worth of data
+                for ind in range(ind_start, ind_half_stop):
+                    row_entry = []
+                    for field in self.dict_lists:
+                        row_entry.append(self.dict_lists[field][ind])
+                    writer.writerow(row_entry)
+            ind_start = ind_stop
+        print("Finished loading half day of data to csv files")
         return
 
 # Creates ETL object which executes ETL process
