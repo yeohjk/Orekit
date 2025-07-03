@@ -67,7 +67,7 @@ class ETL:
             self.ws = self.wb[self.dict_sheets[field]]
             print(f"For Data {field}")
             print('Total number of rows: '+str(self.ws.max_row)+'. And total number of columns: '+str(self.ws.max_column)+'\n')
-            for row_num in range(11, 2821+1):
+            for row_num in range(11, 400+1):
                 val_raw = self.ws.cell(row=row_num, column=1).value
                 val_trans = trans_mtd(val_raw)
                 self.dict_lists[field].append(val_trans)
@@ -78,7 +78,7 @@ class ETL:
         self.ws = self.wb[self.dict_sheets["pos_x"]]
         print("For Data datetime")
         print('Total number of rows: '+str(self.ws.max_row)+'. And total number of columns: '+str(self.ws.max_column)+'\n')
-        for row_num in range(11, 2821+1):
+        for row_num in range(11, 400+1):
             val_raw = self.ws.cell(row=row_num, column=8).value
             self.dict_lists["datetime"].append(val_raw)
         self.num_datapoints = len(self.dict_lists["datetime"])
